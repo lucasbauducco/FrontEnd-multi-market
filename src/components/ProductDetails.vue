@@ -17,13 +17,23 @@
             </div>
             <div class="shop-info">
               <span>Contacto</span>
-              <span>{{ shop.razon_social }} </span>
+              <div>
+                {{ shop.razon_social }}
+              </div>
               <div>
                 <button @click="contactarWhatsApp(shop.telefono)">Contactar por WhatsApp</button>
               </div>
               <a href="mailto:shop.email">
                 <img :src="emailIconPath" alt="go to email">
               </a>
+              <div>
+                <router-link
+                  :to="{ name: 'ListSearch', query: { query: shop.razon_social } }"
+                  
+                >
+                  ver más productos del venderdor
+                </router-link>
+              </div>
             </div>
             <!-- Datos del vendedor y más información aquí -->
         </div>
@@ -50,6 +60,10 @@
         const urlWhatsApp = `https://wa.me/${numero}`;
         // Redirige al usuario a la URL
         window.open(urlWhatsApp, '_blank');
+      },
+      viewproductshop() {
+        // Navega a ProductShop pasando el shop_id como parámetro
+        this.$router.push({ name: 'ProductShop', params: { shop_id: this.shop.id } });
       },
       async fetchProductDetails() {
         const productId = this.$route.params.productId; // Asumiendo que estás usando vue-router
@@ -122,12 +136,51 @@
   margin-top: 2rem;
   line-height: 1.5; /* Mejorar la legibilidad */
 }
-.shop-info{
-  display: flex; 
+.shop-info {
+  display: flex;
   flex-direction: column;
+  gap: 10px; /* Ajusta el espacio entre los elementos */
 }
-.shop-info span, .shop-info div {
-  margin-top: 0.5rem;
+
+.shop-info > span {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.shop-info div,
+.shop-info a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px; /* Espacio entre el icono de email y el texto, si lo hay */
+}
+
+.router-link {
+  display: inline-block;
+  background-color: #007BFF; /* Color de fondo del enlace */
+  color: white; /* Color del texto */
+  padding: 10px 15px;
+  border-radius: 5px; /* Bordes redondeados */
+  text-decoration: none; /* Remueve el subrayado */
+  transition: background-color 0.3s ease; /* Transición suave al cambiar de color */
+}
+
+.router-link:hover {
+  background-color: #0056b3; /* Color al pasar el mouse */
+}
+
+.shop-info button {
+  background-color: #28a745; /* Color de fondo del botón */
+  color: white; /* Color del texto */
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transición suave al cambiar de color */
+}
+
+.shop-info button:hover {
+  background-color: #218838; /* Color al pasar el mouse */
 }
 @media screen and (max-width: 768px) {
   .product-details{
